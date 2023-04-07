@@ -2,6 +2,10 @@
 
 This script generates a tree representation of a folder's structure, including subfolders and files. It also takes into account `.gitignore` files to exclude ignored files and folders from the generated tree.
 
+## Why?
+
+I needed a way to generate folder structures in a standard text format that I could copy and paste into GPT without including all the build artifacts, eg. repository structures for code analysis.  If you wanted to make your own ignore file it should be a simple adapation of a gitignore file, in 90% of my use cases, the gitignore is sufficient.
+
 ## Usage
 
 To use the script, run the following command:
