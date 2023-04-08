@@ -36,7 +36,7 @@ And the `.gitignore` file contains:
 data/output.txt
 ```
 
-Running the script with `python script.py my_project` will output the following tree:
+Running the script with `python3 main.py my_project` will output the following tree:
 
 ```
 my_project/
