@@ -11,7 +11,7 @@ I needed a way to generate folder structures in a standard text format that I co
 To use the script, run the following command:
 
 ```bash
-python script.py <root_folder>
+python3 main.py <root_folder>
 ```
 
 Replace `<root_folder>` with the path to the folder you want to generate the tree for.
