@@ -1,13 +1,12 @@
 [tool.poetry]
 name = "folder-tree-generator"
-version = "0.1.0"
+version = "0.1.1"
 description = "Takes a folder path and outputs a text representation of the folders and files, supports ignore files."
 authors = ["Sean Dearnaley <SeanDearnaley@outlook.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-argparse = "^1.4.0"
 coverage = "^7.2.3"
 
 [tool.poetry.group.dev.dependencies]
@@ -21,3 +20,4 @@ pytest-mock = "^3.10.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

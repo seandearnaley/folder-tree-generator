@@ -56,7 +56,7 @@ def _generate_folder_tree(
     return tree_str
 
 
-def _parse_arguments() -> Path:
+def _parse_arguments() -> str:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Generate a text representation of a folder."
@@ -65,16 +65,16 @@ def _parse_arguments() -> Path:
 
     args = parser.parse_args()
 
-    root_folder = Path(args.root_folder)
+    root_folder: str = args.root_folder
 
     # Check if the root folder exists and is a directory
-    if not root_folder.is_dir():
+    if not Path(root_folder).is_dir():
         raise ValueError(f"{root_folder} is not a valid directory")
 
     return root_folder
 
 
-def generate_tree(root_folder: Path, ignore_file_name: str = ".gitignore") -> str:
+def generate_tree(root_folder: str, ignore_file_name: str = ".gitignore") -> str:
     """Generate a tree of a folder."""
     root = Path(root_folder)
     ignorefile_path = root / ignore_file_name

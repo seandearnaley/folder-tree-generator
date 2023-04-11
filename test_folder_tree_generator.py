@@ -90,7 +90,9 @@ def test_generate_tree(sample_directory: Path, sample_ignore_file: Path) -> None
     """Test main function."""
     # Move the sample_ignore_file to the sample_directory
     sample_ignore_file.rename(sample_directory / sample_ignore_file.name)
-    tree_str = generate_tree(sample_directory, ignore_file_name=sample_ignore_file.name)
+    tree_str = generate_tree(
+        str(sample_directory), ignore_file_name=sample_ignore_file.name
+    )
     expected_tree_str = f"{sample_directory.name}/\n|-- folder1/\n|-- folder2/\n"
     assert tree_str == expected_tree_str
 
@@ -149,7 +151,7 @@ def test_parse_arguments(mocker) -> None:
     # Test when the correct number of arguments is provided and root_folder is valid
     mocker.patch("sys.argv", ["script.py", "root_folder"])
     is_dir_mock.return_value = True
-    assert _parse_arguments() == Path("root_folder")
+    assert _parse_arguments() == "root_folder"
 
     # Test when the provided root_folder is not a valid directory
     mocker.patch("sys.argv", ["script.py", "invalid_root_folder"])
