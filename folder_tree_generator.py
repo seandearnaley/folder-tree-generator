@@ -30,7 +30,7 @@ def _list_entries(root: Path) -> List[Path]:
 
 
 def _entry_to_string(entry: Path, indent: str, ignored_patterns: List[str]) -> str:
-    """Convert a directory entry to its string representation."""
+    """Convert a file system entry to its string representation."""
     if (
         entry.is_dir()
         and not _is_ignored(entry, ignored_patterns)
