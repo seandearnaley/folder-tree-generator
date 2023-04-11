@@ -5,6 +5,18 @@
 
 Folder Tree Generator is a Python module that takes a folder path and outputs a text representation of the folders and files. It supports ignore files, such as `.gitignore`, to exclude certain files or folders from the output.
 
+typical string output:
+
+```text
+my_project/
+|-- .gitignore
+|-- main.py
+|-- utils.py
+|-- data/
+|   |-- input.txt
+|   |-- output.txt
+```
+
 ## Why?
 
 I needed a way to generate folder structures in a standard text format that I could copy and paste into GPT without including all the build artifacts, eg. repository structures for code analysis.  If you wanted to make your own ignore file it should be a simple adapation of a gitignore file, in 90% of my use cases, the gitignore is sufficient.
@@ -65,7 +77,6 @@ Make sure to update the README.md file with these changes.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue on the [GitHub repository](https://github.com/seandearnaley/folder-tree-generator).
-
 
 ## License
 
