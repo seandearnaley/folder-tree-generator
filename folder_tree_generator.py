@@ -38,10 +38,10 @@ def _entry_to_string(entry: Path, indent: str, ignored_patterns: List[str]) -> s
     ):
         subtree = _generate_folder_tree(entry, indent + "|   ", ignored_patterns)
         return f"{indent}|-- {entry.name}/\n{subtree}"
-    elif entry.is_file() and not _is_ignored(entry, ignored_patterns):
+    if entry.is_file() and not _is_ignored(entry, ignored_patterns):
         return f"{indent}|-- {entry.name}\n"
-    else:
-        return ""
+
+    return ""
 
 
 def _generate_folder_tree(
