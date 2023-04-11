@@ -1,6 +1,7 @@
 """Tests for folder_tree_generator."""
 import sys
 from pathlib import Path
+from typing import Union
 
 import pytest
 
@@ -89,9 +90,7 @@ def test_generate_tree(sample_directory: Path, sample_ignore_file: Path) -> None
     """Test main function."""
     # Move the sample_ignore_file to the sample_directory
     sample_ignore_file.rename(sample_directory / sample_ignore_file.name)
-    tree_str = generate_tree(
-        str(sample_directory), ignore_file_name=sample_ignore_file.name
-    )
+    tree_str = generate_tree(sample_directory, ignore_file_name=sample_ignore_file.name)
     expected_tree_str = f"{sample_directory.name}/\n|-- folder1/\n|-- folder2/\n"
     assert tree_str == expected_tree_str
 
@@ -106,54 +105,55 @@ def test_main(sample_directory: Path, sample_ignore_file: Path, capsys) -> None:
     _main()
 
     # Capture the output
-    captured = capsys.readouterr()
+    output = capsys.readouterr().out
 
     # Check the output
-    expected_tree_str = f"{sample_directory.name}/\n|-- folder1/\n|-- folder2/\n"
-    assert captured.out == expected_tree_str + "\n"
+    expected_tree_str = f"{sample_directory.name}/\n|-- folder1/\n|-- folder2/\n\n"
+    assert output == expected_tree_str
 
 
-def test_is_ignored_with_gitignore() -> None:
-    """Test if a .gitignore entry should be ignored."""
-    entry = Path(".gitignore")
-    ignored_patterns = ["*.txt", "*.log"]
+@pytest.mark.parametrize(
+    "entry_name, ignored_patterns, expected_result",
+    [
+        (".gitignore", ["*.txt", "*.log"], True),
+        (".git", ["*.txt", "*.log"], ""),
+        ("ignored.txt", ["*.txt", "*.log"], ""),
+    ],
+)
+def test_entry_handling_cases(
+    sample_directory: Path,
+    entry_name: str,
+    ignored_patterns: list,
+    expected_result: Union[bool, str],
+) -> None:
+    """Test handling of different entries."""
+    if entry_name == ".git":
+        (sample_directory / entry_name).mkdir()
+    else:
+        (sample_directory / entry_name).write_text("content")
 
-    assert _is_ignored(entry, ignored_patterns)
+    entry = sample_directory / entry_name
 
-
-def test_entry_to_string_with_git_directory(sample_directory: Path) -> None:
-    """Test conversion of a .git directory entry to its string representation."""
-    (sample_directory / ".git").mkdir()
-    ignored_patterns = ["*.txt", "*.log"]
-    assert _entry_to_string(sample_directory / ".git", "", ignored_patterns) == ""
-
-
-def test_entry_to_string_with_ignored_file(sample_directory: Path) -> None:
-    """Test conversion of an ignored file entry to its string representation."""
-    (sample_directory / "ignored.txt").write_text("ignored content")
-    ignored_patterns = ["*.txt", "*.log"]
-    assert (
-        _entry_to_string(sample_directory / "ignored.txt", "", ignored_patterns) == ""
-    )
+    if isinstance(expected_result, bool):
+        assert _is_ignored(entry, ignored_patterns) == expected_result
+    else:
+        assert _entry_to_string(entry, "", ignored_patterns) == expected_result
 
 
 def test_parse_arguments(mocker) -> None:
     """Test parsing of command line arguments."""
 
+    # Mock the pathlib.Path.is_dir method
+    is_dir_mock = mocker.patch("pathlib.Path.is_dir")
+
     # Test when the correct number of arguments is provided and root_folder is valid
     mocker.patch("sys.argv", ["script.py", "root_folder"])
-    mocker.patch("os.path.isdir", return_value=True)
-    assert _parse_arguments() == "root_folder"
-
-    # Test when the incorrect number of arguments is provided
-    mocker.patch("sys.argv", ["script.py"])
-    with pytest.raises(ValueError) as exc_info:
-        _parse_arguments()
-    assert str(exc_info.value) == "Usage: python script.py <root_folder>"
+    is_dir_mock.return_value = True
+    assert _parse_arguments() == Path("root_folder")
 
     # Test when the provided root_folder is not a valid directory
     mocker.patch("sys.argv", ["script.py", "invalid_root_folder"])
-    mocker.patch("os.path.isdir", return_value=False)
+    is_dir_mock.return_value = False
     with pytest.raises(ValueError) as exc_info:
         _parse_arguments()
     assert str(exc_info.value) == "invalid_root_folder is not a valid directory"
