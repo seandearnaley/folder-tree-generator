@@ -9,10 +9,10 @@ from folder_tree_generator import (
     _generate_folder_tree,
     _is_ignored,
     _list_entries,
+    _main,
+    _parse_arguments,
     _parse_ignore_patterns,
     generate_tree,
-    main,
-    parse_arguments,
 )
 
 
@@ -103,7 +103,7 @@ def test_main(sample_directory: Path, sample_ignore_file: Path, capsys) -> None:
 
     # Call main with sample_directory
     sys.argv = ["folder_tree_generator.py", str(sample_directory)]
-    main()
+    _main()
 
     # Capture the output
     captured = capsys.readouterr()
@@ -143,17 +143,17 @@ def test_parse_arguments(mocker) -> None:
     # Test when the correct number of arguments is provided and root_folder is valid
     mocker.patch("sys.argv", ["script.py", "root_folder"])
     mocker.patch("os.path.isdir", return_value=True)
-    assert parse_arguments() == "root_folder"
+    assert _parse_arguments() == "root_folder"
 
     # Test when the incorrect number of arguments is provided
     mocker.patch("sys.argv", ["script.py"])
     with pytest.raises(ValueError) as exc_info:
-        parse_arguments()
+        _parse_arguments()
     assert str(exc_info.value) == "Usage: python script.py <root_folder>"
 
     # Test when the provided root_folder is not a valid directory
     mocker.patch("sys.argv", ["script.py", "invalid_root_folder"])
     mocker.patch("os.path.isdir", return_value=False)
     with pytest.raises(ValueError) as exc_info:
-        parse_arguments()
+        _parse_arguments()
     assert str(exc_info.value) == "invalid_root_folder is not a valid directory"

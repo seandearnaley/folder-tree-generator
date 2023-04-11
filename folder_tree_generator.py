@@ -59,20 +59,7 @@ def _generate_folder_tree(
     return tree_str
 
 
-def generate_tree(root_folder: str, ignore_file_name: str = ".gitignore") -> str:
-    """Generate a tree of a folder."""
-    root = Path(root_folder)
-    ignorefile_path = root / ignore_file_name
-    ignored_patterns = (
-        _parse_ignore_patterns(ignorefile_path) if ignorefile_path.exists() else []
-    )
-
-    tree_str = f"{root.name}/\n"
-    tree_str += _generate_folder_tree(root, ignored_patterns=ignored_patterns)
-    return tree_str
-
-
-def parse_arguments() -> str:
+def _parse_arguments() -> str:
     """Parse command line arguments."""
     if len(sys.argv) != 2:
         raise ValueError("Usage: python script.py <root_folder>")
@@ -86,12 +73,25 @@ def parse_arguments() -> str:
     return root_folder
 
 
-def main():
+def generate_tree(root_folder: str, ignore_file_name: str = ".gitignore") -> str:
+    """Generate a tree of a folder."""
+    root = Path(root_folder)
+    ignorefile_path = root / ignore_file_name
+    ignored_patterns = (
+        _parse_ignore_patterns(ignorefile_path) if ignorefile_path.exists() else []
+    )
+
+    tree_str = f"{root.name}/\n"
+    tree_str += _generate_folder_tree(root, ignored_patterns=ignored_patterns)
+    return tree_str
+
+
+def _main():
     """Main function."""
-    root_folder = parse_arguments()
+    root_folder = _parse_arguments()
     output_text = generate_tree(root_folder)
     print(output_text)
 
 
 if __name__ == "__main__":
-    main()
+    _main()
