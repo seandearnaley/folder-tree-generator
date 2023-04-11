@@ -3,6 +3,9 @@
 
 [![PyPI version](https://badge.fury.io/py/folder-tree-generator.svg)](https://badge.fury.io/py/folder-tree-generator)
 
+![Test](https://github.com/seandearnaley/folder-tree-generator/workflows/Run%20pytest/badge.svg)
+
+
 Folder Tree Generator is a Python module that takes a folder path and outputs a text representation of the folders and files. It supports ignore files, such as `.gitignore`, to exclude certain files or folders from the output.
 
 typical string output:
