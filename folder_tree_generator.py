@@ -74,12 +74,14 @@ def _parse_arguments() -> str:
     return root_folder
 
 
-def generate_tree(root_folder: str, ignore_file_name: str) -> str:
+def generate_tree(root_folder: str, ignore_file_name: Optional[str] = None) -> str:
     """Generate a tree of a folder."""
     root = Path(root_folder)
-    ignorefile_path = root / ignore_file_name
+    ignorefile_path = root / ignore_file_name if ignore_file_name else None
     ignored_patterns = (
-        _parse_ignore_patterns(ignorefile_path) if ignorefile_path.exists() else []
+        _parse_ignore_patterns(ignorefile_path)
+        if ignorefile_path and ignorefile_path.exists()
+        else []
     )
 
     tree_str = f"{root.name}/\n"
