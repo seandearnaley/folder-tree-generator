@@ -39,7 +39,7 @@ You can use the module as a command-line tool or import it in your Python script
 ### Command-line usage
 
 ```bash
-python -m folder_tree_generator /path/to/your/folder
+python -m folder_tree_generator/folder_tree_generator /path/to/your/folder
 ```
 
 ### Python script usage

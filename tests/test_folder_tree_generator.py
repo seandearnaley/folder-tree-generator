@@ -5,7 +5,7 @@ from typing import Union
 
 import pytest
 
-from folder_tree_generator import (
+from folder_tree_generator.folder_tree_generator import (
     _entry_to_string,
     _generate_folder_tree,
     _is_ignored,

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "folder-tree-generator"
-version = "0.1.5"
+version = "0.1.8"
 description = "Takes a folder path and outputs a text representation of the folders and files, supports ignore files."
 authors = ["Sean Dearnaley <SeanDearnaley@outlook.com>"]
 readme = "README.md"
