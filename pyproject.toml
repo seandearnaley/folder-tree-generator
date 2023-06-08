@@ -21,3 +21,5 @@ coverage = "^7.2.3"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.mypy]
+files = "folder_tree_generator"
