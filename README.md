@@ -32,6 +32,12 @@ You can install the module from PyPI using pip:
 pip install folder-tree-generator
 ```
 
+or via Poetry:
+
+```bash
+poetry add folder-tree-generator
+```
+
 ## Usage
 
 You can use the module as a command-line tool or import it in your Python script.
