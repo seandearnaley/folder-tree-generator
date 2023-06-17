@@ -74,10 +74,10 @@ def parse_arguments() -> str:
     return root_folder
 
 
-def generate_tree(root_folder: str, ignore_file_name: Optional[str] = None) -> str:
+def generate_tree(root_folder: str, ignore_file_path: Optional[str] = None) -> str:
     """Generate a tree of a folder."""
     root = Path(root_folder)
-    ignorefile_path = root / ignore_file_name if ignore_file_name else None
+    ignorefile_path = Path(ignore_file_path) if ignore_file_path else None
     ignored_patterns = (
         parse_ignore_patterns(ignorefile_path)
         if ignorefile_path and ignorefile_path.exists()
@@ -92,7 +92,9 @@ def generate_tree(root_folder: str, ignore_file_name: Optional[str] = None) -> s
 def main() -> None:
     """Main function."""
     root_folder = parse_arguments()
-    output_text = generate_tree(root_folder, ignore_file_name=".gitignore")
+    output_text = generate_tree(
+        root_folder, ignore_file_path=f"{root_folder}/.gitignore"
+    )
     print(output_text)
 
 

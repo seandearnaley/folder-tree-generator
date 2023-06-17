@@ -89,10 +89,8 @@ def test_generate_folder_tree_with_ignore(sample_directory: Path) -> None:
 
 def test_generate_tree(sample_directory: Path, sample_ignore_file: Path) -> None:
     """Test main function."""
-    # Move the sample_ignore_file to the sample_directory
-    sample_ignore_file.rename(sample_directory / sample_ignore_file.name)
     tree_str = generate_tree(
-        str(sample_directory), ignore_file_name=sample_ignore_file.name
+        str(sample_directory), ignore_file_path=str(sample_ignore_file)
     )
     expected_tree_str = f"{sample_directory.name}/\n|-- folder1/\n|-- folder2/\n"
     assert tree_str == expected_tree_str
