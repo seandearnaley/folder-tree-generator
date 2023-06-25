@@ -56,24 +56,6 @@ def generate_folder_tree(
     return tree_str
 
 
-def parse_arguments() -> str:
-    """Parse command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Generate a text representation of a folder."
-    )
-    parser.add_argument("root_folder", type=str, help="Path to the root folder")
-
-    args = parser.parse_args()
-
-    root_folder: str = args.root_folder
-
-    # Check if the root folder exists and is a directory
-    if not Path(root_folder).is_dir():
-        raise ValueError(f"{root_folder} is not a valid directory")
-
-    return root_folder
-
-
 def generate_tree(root_folder: str, ignore_file_path: Optional[str] = None) -> str:
     """Generate a tree of a folder."""
     root = Path(root_folder)
@@ -89,12 +71,51 @@ def generate_tree(root_folder: str, ignore_file_path: Optional[str] = None) -> s
     return tree_str
 
 
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate a text representation of a folder."
+    )
+    parser.add_argument("root_folder", type=str, help="Path to the root folder")
+    parser.add_argument(
+        "--report_file_path",
+        type=str,
+        default="report.txt",
+        help="Name of the report file",
+    )
+    parser.add_argument(
+        "--ignore_file_path",
+        type=str,
+        default=None,
+        help="Path to the ignore file",
+    )
+    args = parser.parse_args()
+
+    root_folder: str = args.root_folder
+    ignore_file_path: Optional[str] = args.ignore_file_path
+
+    # Check if the root folder exists and is a directory
+    if not Path(root_folder).is_dir():
+        raise ValueError(f"{root_folder} is not a valid directory")
+
+    if ignore_file_path and not Path(ignore_file_path).is_file():
+        raise ValueError(f"{ignore_file_path} is not a valid file")
+
+    return args
+
+
 def main() -> None:
     """Main function."""
-    root_folder = parse_arguments()
-    output_text = generate_tree(
-        root_folder, ignore_file_path=f"{root_folder}/.gitignore"
-    )
+    args = parse_arguments()
+    root_folder = args.root_folder
+    report_file_path = args.report_file_path
+    ignore_file_path = args.ignore_file_path if args.ignore_file_path else None
+
+    output_text = generate_tree(root_folder, ignore_file_path)
+
+    with open(report_file_path, "w", encoding="utf-8") as file:
+        file.write(output_text)
+
     print(output_text)
 
 
