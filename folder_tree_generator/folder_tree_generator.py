@@ -94,6 +94,8 @@ def parse_arguments() -> argparse.Namespace:
     root_folder: str = args.root_folder
     ignore_file_path: Optional[str] = args.ignore_file_path
 
+    # TODO: move path checks to generate function
+
     # Check if the root folder exists and is a directory
     if not Path(root_folder).is_dir():
         raise ValueError(f"{root_folder} is not a valid directory")
