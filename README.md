@@ -60,7 +60,7 @@ print(output_text)
 You can change the ignore file name by passing an optional argument to the `generate_tree` function:
 
 ```python
-output_text = generate_tree("/path/to/your/folder", ignore_file_name=".myignore")
+output_text = generate_tree("/path/to/your/folder", ignore_file_path="/path/to/your/folder/.myignore")
 ```
 
 ## Optional Parameters
