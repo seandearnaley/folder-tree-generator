@@ -57,7 +57,7 @@ print(output_text)
 
 ## Configuration
 
-By default, the module looks for a `.gitignore` file in the root folder to determine which files and folders to ignore. You can change the ignore file name by passing an optional argument to the `generate_tree` function:
+You can change the ignore file name by passing an optional argument to the `generate_tree` function:
 
 ```python
 output_text = generate_tree("/path/to/your/folder", ignore_file_name=".myignore")
