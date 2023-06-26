@@ -3,7 +3,6 @@ import argparse
 import sys
 from pathlib import Path
 from typing import Union
-from unittest.mock import MagicMock
 
 import pytest
 from pytest import CaptureFixture
@@ -152,36 +151,21 @@ def test_entry_handling_cases(
 def test_parse_arguments(mocker: MockerFixture) -> None:
     """Test parsing of command line arguments."""
 
-    # Mock the pathlib.Path.is_dir method
-    is_dir_mock: MagicMock = mocker.patch("pathlib.Path.is_dir")
-
-    # Test when the correct number of arguments is provided and root_folder is valid
     mocker.patch("sys.argv", ["script.py", "root_folder"])
-    is_dir_mock.return_value = True
     assert parse_arguments() == argparse.Namespace(
         root_folder="root_folder", report_file_path="report.txt", ignore_file_path=None
     )
 
-    # Test when the provided root_folder is not a valid directory
-    mocker.patch("sys.argv", ["script.py", "invalid_root_folder"])
-    is_dir_mock.return_value = False
-    with pytest.raises(ValueError) as exc_info:
-        parse_arguments()
-    assert str(exc_info.value) == "invalid_root_folder is not a valid directory"
+
+def test_generate_tree_invalid_root_folder() -> None:
+    """Test generate_tree function with an invalid root folder."""
+    with pytest.raises(ValueError) as excinfo:
+        generate_tree("invalid_folder")
+    assert str(excinfo.value) == "invalid_folder is not a valid directory"
 
 
-def test_invalid_ignore_file_path(mocker: MockerFixture) -> None:
-    """Test when the provided ignore_file_path is not a valid file."""
-
-    is_file_mock: MagicMock = mocker.patch("pathlib.Path.is_file")
-    is_dir_mock: MagicMock = mocker.patch("pathlib.Path.is_dir")
-
-    mocker.patch(
-        "sys.argv",
-        ["script.py", "root_folder", "--ignore_file_path", "invalid_ignore_file_path"],
-    )
-    is_file_mock.return_value = False
-    is_dir_mock.return_value = True
-    with pytest.raises(ValueError) as exc_info:
-        parse_arguments()
-    assert str(exc_info.value) == "invalid_ignore_file_path is not a valid file"
+def test_generate_tree_invalid_ignore_file_path(sample_directory: Path) -> None:
+    """Test generate_tree function with an invalid ignore file path."""
+    with pytest.raises(ValueError) as excinfo:
+        generate_tree(str(sample_directory), ignore_file_path="invalid_file")
+    assert str(excinfo.value) == "invalid_file is not a valid file"

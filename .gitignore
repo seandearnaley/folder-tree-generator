@@ -132,3 +132,5 @@ dmypy.json
 .vscode/
 
 report.txt
+
+.DS_Store
