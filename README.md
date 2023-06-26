@@ -22,7 +22,7 @@ my_project/
 
 ## Why?
 
-This tool was created to generate folder structures in a standard text format that could be copied and pasted into GPT without including all the build artifacts, e.g., repository structures for code analysis. If you want to create your own ignore file, it should be a simple adaptation of a .gitignore file. In 90% of use cases, the .gitignore file is sufficient.
+This tool was created to generate folder structures in a standard text format that could be copied and pasted into an LLM without including all the build artifacts, e.g., repository structures for code analysis. If you want to create your own ignore file, it should be a simple adaptation of a .gitignore file. In 90% of use cases, the existing repo's .gitignore file is sufficient.
 
 ## Installation
 
