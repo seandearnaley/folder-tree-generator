@@ -60,6 +60,14 @@ def generate_tree(root_folder: str, ignore_file_path: Optional[str] = None) -> s
     """Generate a tree of a folder."""
     root = Path(root_folder)
     ignorefile_path = Path(ignore_file_path) if ignore_file_path else None
+
+    if not root.is_dir():
+        raise ValueError(f"{root_folder} is not a valid directory")
+
+    if ignorefile_path is not None:
+        if not ignorefile_path.is_file():
+            raise ValueError(f"{ignore_file_path} is not a valid file")
+
     ignored_patterns = (
         parse_ignore_patterns(ignorefile_path)
         if ignorefile_path and ignorefile_path.exists()
@@ -90,18 +98,6 @@ def parse_arguments() -> argparse.Namespace:
         help="Path to the ignore file",
     )
     args = parser.parse_args()
-
-    root_folder: str = args.root_folder
-    ignore_file_path: Optional[str] = args.ignore_file_path
-
-    # TODO: move path checks to generate function
-
-    # Check if the root folder exists and is a directory
-    if not Path(root_folder).is_dir():
-        raise ValueError(f"{root_folder} is not a valid directory")
-
-    if ignore_file_path and not Path(ignore_file_path).is_file():
-        raise ValueError(f"{ignore_file_path} is not a valid file")
 
     return args
 
