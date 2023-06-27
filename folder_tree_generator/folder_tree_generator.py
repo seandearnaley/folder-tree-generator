@@ -79,6 +79,17 @@ def generate_tree(root_folder: str, ignore_file_path: Optional[str] = None) -> s
     return tree_str
 
 
+def expand_user_path(path: Optional[str]) -> Optional[str]:
+    """Expand the user home directory symbol '~' if it's part of the path."""
+    if path is not None:
+        path_obj = Path(path)
+        if "~" in path:
+            return str(path_obj.expanduser().resolve())
+
+        return str(path_obj)
+    return None
+
+
 def parse_arguments() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
@@ -98,6 +109,9 @@ def parse_arguments() -> argparse.Namespace:
         help="Path to the ignore file",
     )
     args = parser.parse_args()
+
+    args.root_folder = expand_user_path(args.root_folder)
+    args.ignore_file_path = expand_user_path(args.ignore_file_path)
 
     return args
 

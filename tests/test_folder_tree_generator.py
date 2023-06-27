@@ -10,6 +10,7 @@ from pytest_mock import MockerFixture
 
 from folder_tree_generator.folder_tree_generator import (
     entry_to_string,
+    expand_user_path,
     generate_folder_tree,
     generate_tree,
     is_ignored,
@@ -169,3 +170,18 @@ def test_generate_tree_invalid_ignore_file_path(sample_directory: Path) -> None:
     with pytest.raises(ValueError) as excinfo:
         generate_tree(str(sample_directory), ignore_file_path="invalid_file")
     assert str(excinfo.value) == "invalid_file is not a valid file"
+
+
+def test_expand_user_path():
+    """Test expand_user_path function."""
+    # test with a relative path
+    relative_path = "test_dir/test_file"
+    assert expand_user_path(relative_path) == relative_path
+
+    # test with a home directory shortcut
+    home_shortcut_path = "~/test_dir/test_file"
+    expected_path = Path(home_shortcut_path).expanduser().resolve()
+    assert expand_user_path(home_shortcut_path) == str(expected_path)
+
+    # test with None
+    assert expand_user_path(None) is None
