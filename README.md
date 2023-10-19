@@ -45,7 +45,7 @@ You can use the module as a command-line tool or import it in your Python script
 ### Command-line usage
 
 ```bash
-python folder_tree_generator /path/to/your/folder --report_file_path report.txt --ignore_file_path /path/to/your/ignore_folder/.gitignore
+python folder_tree_generator/folder_tree_generator.py /path/to/your/folder --report_file_path report.txt --ignore_file_path /path/to/your/ignore_folder/.gitignore
 ```
 
 ### Python script usage
